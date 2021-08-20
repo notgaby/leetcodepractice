@@ -1,0 +1,68 @@
+//EASY - https://leetcode.com/problems/valid-anagram/submissions/
+
+
+//1. My initial solution
+using namespace std;
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        
+        //keep track of letters and number of occurences for each string
+        unordered_map<char, int> sMap;
+        unordered_map<char, int> tMap;
+        map<int, int> dict;
+
+
+        //add all letters and count to sMap for string s
+        for(int i = 0; i < s.length(); i++){
+            
+            //if letter already exists, just +1 to what's already in there
+            if(sMap.find(s[i]) != sMap.end()){
+                sMap[s[i]]++;
+            }else{
+                //doesn't exist so add to it
+                sMap.insert(pair<char, int>(s[i], 1));
+            }     
+        }
+        
+        
+        //now add all letters and count to other map and string
+        for(int i = 0; i < t.length(); i++){
+            if(sMap.find(t[i]) == sMap.end()){
+                return false; //if a letter in t does not exist in s, then it's not an anagram
+            }else if(tMap.find(t[i]) != tMap.end()){
+                tMap[t[i]]++;
+            }else{
+                tMap.insert(pair<char, int>(t[i], 1));
+            }
+        }
+        
+        //if we make it this farr, both strings contain the same letters. Now need to check if same # occurences
+        for(const auto &it: sMap){
+            if(it.second != tMap[it.first]){
+                return false; //both maps have the same letters but not same number of occurences
+            }
+        }
+        
+        return true;
+    }
+};
+
+
+//2. OTHERS TO TAKE NOTE FROM
+https://leetcode.com/problems/valid-anagram/discuss/66519/2-C%2B%2B-Solutions-with-Explanations
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;
+        int n = s.length();
+        unordered_map<char, int> counts;
+        for (int i = 0; i < n; i++) {
+            counts[s[i]]++;                 //SMARTT DIDNTT TTHINK OF THIS- +/- concurrently. If anagram, should cancel out to 0
+            counts[t[i]]--;
+        }
+        for (auto count : counts)
+            if (count.second) return false;   //if count.second is a number other than 0, it means letters did not cancel out and therefore not anagram
+        return true;
+    }
+};
