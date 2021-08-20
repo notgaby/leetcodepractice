@@ -9,7 +9,7 @@ RESOURCES
 
 
 QUICK REMINDERS
->>> C++ 
+> C++ 
 - Vector size = .size
 - 
->>> Python
+> Python
