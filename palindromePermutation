@@ -1,0 +1,83 @@
+//EASY : https://leetcode.com/problems/palindrome-permutation/submissions/
+
+//1 MY SOLUTION: Runtime: 0 ms, faster than 100.00% of C++ online submissions for Palindrome Permutation.
+//Memory Usage: 6.2 MB, less than 29.90% of C++ online submissions for Palindrome Permutation.
+
+class Solution {
+public:
+    bool canPermutePalindrome(string s) {
+        
+        //palindrome = read same forward and backward 
+
+        
+        
+        //easy cases
+        
+        if(s.length() == 1){
+            return true; //palindrome of itself
+        }else if(s.length() == 2){
+            if(s[0] == s[1]){
+                return true;
+            }
+            return false;
+        }
+        
+        //other cases - length of 3 or more
+        
+        //create a map to keep count of letters and occurrences in string
+        unordered_map<char, int>letters;
+        
+        for(int i = 0; i < s.length(); i++){
+            letters[s[i]]++; //increment count for occurence
+        }
+        
+        //IDEA:
+        //aab => a[b]a
+        //carerac => car[e]car
+        //Palindrome can be created by moving letters around as long as there is only 1
+        //letter that is used as a mediator/divsor between front and back
+        //conditions: 1) there is only 1 letter that's a mediator and 2) every other letter is %2 so enough for
+        //front and back
+        
+        
+        int extraLetter = 0;    //mediator check
+        
+        for(const auto &it: letters){
+            
+            //mediator is a letter with a size of at least 1. If there exists 2 letters to be potential mediators,
+            //it is not a palindrome. We are also checking that the mediator is not divisible by 2 so we don't 
+            //count regular letters as mediators. (Regular letters that make palindrome)
+            if(it.second >= extraLetter && it.second % 2 != 0){
+                if(extraLetter != 0 ){
+                    return false;
+                }
+                extraLetter = it.second;
+            }else if(it.second % 2 != 0 && it.second != s.length()){
+                //If the letter is not %2 and it's not the length of the whole string, it is not possible to make
+                //a palindrome
+                return false;
+            }
+        }
+        
+        
+        
+        
+        
+        return true;
+        
+    }
+};
+
+//2. OTHERS TAKE NOTE
+//BETTER explanation of what i was doing (feeling big brain): Just check that no more than one character appears an odd number of times. Because if there is one, then it must be in the middle of the palindrome. So we can't have two of them.
+bool canPermutePalindrome(string s) {
+    int dict[256] = {0};
+    for (auto c: s)
+        dict[c]++;
+    int cnt = 0;
+    for (int i=0; i<256; i++){
+        if (dict[i] % 2 != 0)   cnt++;
+    }
+    
+    return cnt<=1;    //makes sense if cnt = 0, then there arer no mediator letters. could prob even just return false in the loop too to short circuit
+}
