@@ -1,0 +1,51 @@
+//EASY || https://leetcode.com/problems/contains-duplicate/submissions/
+
+
+
+//1. Mine C++
+
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        map<int, int> dict; //create map keeping track of the number & # of occurences
+        for(int i = 0; i < nums.size(); i++){
+            if(dict.find(nums[i]) != dict.end()){ //check if int is already in map
+                //In map = +1 to count
+                dict[nums[i]] = dict[nums[i]]+1;
+            }else{
+                dict.insert(pair<int, int>(nums[i],1));
+            }
+        }
+        
+        //now check dict and find if a value appears at least twice
+        
+        for(const auto &it : dict){
+            if(it.second >= 2){
+                return true;
+            }
+        }
+        
+        return false;
+        
+    }
+};
+
+
+
+//2. OTHERS -- USEFUL
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int,int>m;
+        for(int i = 0; i < n; i++)
+        {
+            if(m.find(nums[i]) == m.end())  
+                m[nums[i]]++;
+            else 
+                return true;                  //Quicker b/c can automatically just return true if key exisst duhhhh = just 1 for loop
+        }
+        return false;
+  }
+};
+
