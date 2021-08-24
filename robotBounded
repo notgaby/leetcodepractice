@@ -1,0 +1,50 @@
+//https://leetcode.com/problems/robot-bounded-in-circle/submissions/
+
+class Solution {
+public:
+    bool isRobotBounded(string instructions) {
+        
+        int dirX = 0;
+        int dirY = 1; //facing north
+        
+        //location
+        int x = 0;
+        int y = 0;
+        
+        for(int i = 0; i < instructions.length(); i++){
+            if(instructions[i] == 'G'){ //go straight
+                //ex: moving (0,0) => (0,1) just add dir values to current coordinate locations
+                
+                x += dirX;
+                y += dirY;
+                
+            }else if(instructions[i] == 'L'){
+                //go left
+                //NOT moving, just changing direction
+                //ex: (0,1) facing north to (0,1) facing west
+                //dirX changes to go left
+                //linear alg: rotating 90 deg = swap x & y val
+                int tempX = dirX;
+                dirX = -1*dirY; //-1 = left, 1 = right
+                dirY = tempX;
+                
+            }else{
+                //go right
+                int tempX = dirX;
+                dirX = dirY;
+                dirY = -1*tempX;
+                
+            }
+        }
+        
+        //we end where we started. Change in position = 0
+        if(dirX == 0 && dirY == 1){
+            return x==0 && y ==0;
+        }
+        
+        //direction changes = will be stuck in a loop and will get back to start point at some point
+        //direction needs to change. If direction doesn't change, will just drift away
+        return true;
+        
+    }
+};
